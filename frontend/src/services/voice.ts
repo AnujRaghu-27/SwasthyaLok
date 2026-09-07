@@ -1,62 +1,117 @@
 import type { Language } from '../types';
 
+const LANG_BCP47_MAP: Record<Language, string> = {
+  hindi: 'hi-IN',
+  english: 'en-IN',
+  marathi: 'mr-IN',
+  bengali: 'bn-IN',
+  tamil: 'ta-IN',
+  telugu: 'te-IN',
+  gujarati: 'gu-IN',
+  kannada: 'kn-IN',
+  punjabi: 'pa-IN',
+};
+
 class VoiceService {
   private synth: SpeechSynthesis | null = null;
-  private isMuted: boolean = false;
+  private currentUtterance: SpeechSynthesisUtterance | null = null;
+  private voices: SpeechSynthesisVoice[] = [];
 
   constructor() {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       this.synth = window.speechSynthesis;
+      this.initVoices();
+      if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = () => this.initVoices();
+      }
     }
   }
 
-  public toggleMute(): boolean {
-    this.isMuted = !this.isMuted;
-    if (this.isMuted && this.synth) {
-      this.synth.cancel();
-    }
-    return this.isMuted;
+  private initVoices(): void {
+    if (!this.synth) return;
+    this.voices = this.synth.getVoices();
   }
 
-  public getIsMuted(): boolean {
-    return this.isMuted;
+  private getBestVoice(targetLang: string): SpeechSynthesisVoice | null {
+    if (this.voices.length === 0 && this.synth) {
+      this.voices = this.synth.getVoices();
+    }
+    if (this.voices.length === 0) return null;
+
+    const langCode = targetLang.split('-')[0].toLowerCase();
+
+    // 1. Exact BCP-47 match (e.g. hi-IN)
+    let matched = this.voices.find(v => v.lang.replace('_', '-').toLowerCase() === targetLang.toLowerCase());
+    if (matched) return matched;
+
+    // 2. Language prefix match (e.g. hi)
+    matched = this.voices.find(v => v.lang.replace('_', '-').toLowerCase().startsWith(langCode));
+    if (matched) return matched;
+
+    // 3. Indian English fallback for natural Indian accent pronunciation
+    matched = this.voices.find(v => v.lang.replace('_', '-').toLowerCase() === 'en-in');
+    if (matched) return matched;
+
+    // 4. Default voice
+    return this.voices.find(v => v.default) || this.voices[0] || null;
   }
 
   public speak(text: string, language: Language = 'hindi', onEnd?: () => void): void {
-    if (this.isMuted || !this.synth) return;
+    if (!this.synth || !text) return;
 
-    // Cancel any ongoing speech
-    this.synth.cancel();
+    try {
+      // Unstick any paused state in Chromium
+      if (this.synth.paused) {
+        this.synth.resume();
+      }
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    
-    // Language mapping
-    const langMap: Record<Language, string> = {
-      hindi: 'hi-IN',
-      english: 'en-IN',
-      marathi: 'mr-IN',
-      bengali: 'bn-IN',
-      tamil: 'ta-IN',
-      telugu: 'te-IN',
-      gujarati: 'gu-IN',
-      kannada: 'kn-IN',
-      punjabi: 'pa-IN',
-    };
+      // Cancel any ongoing speech
+      this.synth.cancel();
 
-    utterance.lang = langMap[language] || 'hi-IN';
-    utterance.rate = 0.95; // Slightly slower for clear hospital announcements
-    utterance.pitch = 1.0;
+      const targetLang = LANG_BCP47_MAP[language] || 'hi-IN';
+      const utterance = new SpeechSynthesisUtterance(text);
+      this.currentUtterance = utterance; // Prevent garbage collection in Chrome
 
-    if (onEnd) {
-      utterance.onend = onEnd;
+      const bestVoice = this.getBestVoice(targetLang);
+      if (bestVoice) {
+        utterance.voice = bestVoice;
+        utterance.lang = bestVoice.lang;
+      } else {
+        utterance.lang = targetLang;
+      }
+
+      utterance.rate = 0.92;
+      utterance.pitch = 1.0;
+
+      utterance.onend = () => {
+        this.currentUtterance = null;
+        if (onEnd) onEnd();
+      };
+
+      utterance.onerror = (event) => {
+        console.warn('SpeechSynthesis error:', event.error);
+        this.currentUtterance = null;
+      };
+
+      // Slight timeout to avoid Chromium cancel/speak race condition
+      setTimeout(() => {
+        if (!this.synth) return;
+        this.synth.resume();
+        this.synth.speak(utterance);
+      }, 35);
+    } catch (err) {
+      console.warn('VoiceService speak failed:', err);
     }
+  }
 
-    this.synth.speak(utterance);
+  public isSpeaking(): boolean {
+    return this.currentUtterance !== null;
   }
 
   public stop(): void {
     if (this.synth) {
       this.synth.cancel();
+      this.currentUtterance = null;
     }
   }
 }

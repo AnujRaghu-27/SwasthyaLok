@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { voiceService } from '../../services/voice';
 
 interface KioskHeaderProps {
   onSosClick?: () => void;
@@ -8,13 +7,7 @@ interface KioskHeaderProps {
 }
 
 export const KioskHeader: React.FC<KioskHeaderProps> = ({ onSosClick, onStaffHelp }) => {
-  const [isMuted, setIsMuted] = useState(false);
   const { t } = useTranslation('common');
-
-  const handleToggleVolume = () => {
-    const muted = voiceService.toggleMute();
-    setIsMuted(muted);
-  };
 
   return (
     <header className="sticky top-0 left-0 right-0 w-full z-40 bg-white/95 backdrop-blur-xl border-b border-surface-container-high shadow-[0_4px_20px_rgba(13,122,95,0.06)] px-4 sm:px-8 py-3">
@@ -46,7 +39,7 @@ export const KioskHeader: React.FC<KioskHeaderProps> = ({ onSosClick, onStaffHel
           {/* Helpline / Staff Button */}
           <button
             onClick={onStaffHelp}
-            className="hidden md:flex items-center gap-2 bg-surface-container hover:bg-surface-container-high px-3.5 py-1.5 rounded-xl border border-outline-variant/30 text-left transition-colors cursor-pointer"
+            className="hidden sm:flex items-center gap-2 bg-surface-container hover:bg-surface-container-high px-4 py-2 rounded-xl border border-outline-variant/30 text-left transition-colors cursor-pointer"
             type="button"
           >
             <span className="material-symbols-outlined text-on-surface-variant text-[20px]">support_agent</span>
@@ -55,28 +48,6 @@ export const KioskHeader: React.FC<KioskHeaderProps> = ({ onSosClick, onStaffHel
               <span className="text-xs font-bold text-on-surface leading-tight">1800-108-OPD</span>
             </div>
           </button>
-
-          {/* Voice Volume Control & Equalizer */}
-          <div className="flex items-center gap-1.5 bg-surface-container px-2.5 py-1.5 rounded-xl border border-outline-variant/30">
-            <button
-              aria-label={isMuted ? 'Unmute Voice Guidance' : 'Mute Voice Guidance'}
-              onClick={handleToggleVolume}
-              className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
-                isMuted ? 'bg-error-container text-error' : 'bg-white text-on-surface hover:bg-surface-dim shadow-sm'
-              }`}
-              type="button"
-            >
-              <span className="material-symbols-outlined text-[20px]">
-                {isMuted ? 'volume_off' : 'volume_up'}
-              </span>
-            </button>
-            <div className="flex items-center gap-1 px-1">
-              <span className={`w-1 rounded-full bg-primary ${isMuted ? 'h-2 opacity-30' : 'h-3 animate-sound-wave-1'}`}></span>
-              <span className={`w-1 rounded-full bg-primary ${isMuted ? 'h-2 opacity-30' : 'h-5 animate-sound-wave-2'}`}></span>
-              <span className={`w-1 rounded-full bg-primary ${isMuted ? 'h-2 opacity-30' : 'h-4 animate-sound-wave-3'}`}></span>
-              <span className={`w-1 rounded-full bg-primary ${isMuted ? 'h-2 opacity-30' : 'h-6 animate-sound-wave-4'}`}></span>
-            </div>
-          </div>
 
           {/* SOS Emergency Button */}
           <button

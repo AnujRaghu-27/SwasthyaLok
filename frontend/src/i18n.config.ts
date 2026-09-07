@@ -48,14 +48,28 @@ i18n
     },
   });
 
+const resourcesMap: Record<Language, Record<string, any>> = {
+  hindi: hi,
+  english: en,
+  marathi: mr,
+  bengali: bn,
+  tamil: ta,
+  telugu: te,
+  gujarati: gu,
+  kannada: kn,
+  punjabi: pa,
+};
+
 /**
  * Returns a translated string for a SPECIFIC language without changing
  * the active UI language. Used to get voice prompts in the target language.
  */
 export function getVoicePrompt(lang: Language, key: string): string {
+  if (resourcesMap[lang] && resourcesMap[lang][key]) {
+    return resourcesMap[lang][key];
+  }
   const locale = langToLocale[lang];
-  const fixedT = i18n.getFixedT(locale, 'common');
-  return fixedT(key) as string;
+  return i18n.t(key, { lng: locale, ns: 'common' }) as string;
 }
 
 export default i18n;
