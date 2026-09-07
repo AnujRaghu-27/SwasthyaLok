@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import type { KioskStep } from '../../types';
 
 interface StepProgressProps {
@@ -8,19 +9,20 @@ interface StepProgressProps {
 
 interface StepItem {
   step: KioskStep;
-  titleHi: string;
-  titleEn: string;
+  key: 'step1' | 'step2' | 'step3' | 'step4' | 'step5';
 }
 
 const STEPS: StepItem[] = [
-  { step: 1, titleHi: '1. भाषा', titleEn: 'Language' },
-  { step: 2, titleHi: '2. माध्यम', titleEn: 'Mode' },
-  { step: 3, titleHi: '3. पहचान', titleEn: 'ID & OTP' },
-  { step: 4, titleHi: '4. सेवा', titleEn: 'Service' },
-  { step: 5, titleHi: '5. पर्ची', titleEn: 'Token' },
+  { step: 1, key: 'step1' },
+  { step: 2, key: 'step2' },
+  { step: 3, key: 'step3' },
+  { step: 4, key: 'step4' },
+  { step: 5, key: 'step5' },
 ];
 
 export const StepProgress: React.FC<StepProgressProps> = ({ currentStep, onStepClick }) => {
+  const { t } = useTranslation('common');
+
   return (
     <nav className="w-full max-w-7xl mx-auto px-4 sm:px-8 py-3 overflow-x-auto">
       <div className="flex items-center justify-between gap-2 sm:gap-3 min-w-[620px]">
@@ -44,8 +46,8 @@ export const StepProgress: React.FC<StepProgressProps> = ({ currentStep, onStepC
               {isCompleted && (
                 <span className="material-symbols-outlined text-[18px] text-primary">check_circle</span>
               )}
-              <span className="text-xs sm:text-sm whitespace-nowrap">
-                {item.titleHi} / <span className="opacity-80 font-normal">{item.titleEn}</span>
+              <span className="text-xs sm:text-sm whitespace-nowrap font-medium">
+                {t(item.key)}
               </span>
             </button>
           );

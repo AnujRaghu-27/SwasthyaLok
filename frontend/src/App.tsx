@@ -1,31 +1,35 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Language, InteractionMode, KioskStep } from './types';
 import { KioskHeader } from './components/kiosk/KioskHeader';
 import { StepProgress } from './components/kiosk/StepProgress';
 import { LanguageAndModeScreen } from './screens/kiosk/LanguageAndModeScreen';
 import { voiceService } from './services/voice';
+import i18n, { langToLocale } from './i18n.config';
 
 export function App() {
   const [currentStep, setCurrentStep] = useState<KioskStep>(1);
   const [language, setLanguage] = useState<Language>('hindi');
   const [mode, setMode] = useState<InteractionMode>('voice');
+  const { t } = useTranslation('common');
+
+  const handleLanguageChange = (lang: Language) => {
+    setLanguage(lang);
+    // Tell i18next to switch — every useTranslation() hook updates automatically
+    i18n.changeLanguage(langToLocale[lang]);
+  };
 
   const handleProceedFromLanguageAndMode = () => {
-    // Announce transition
-    if (language === 'hindi') {
-      voiceService.speak('कृपया अपनी पहचान सत्यापित करें', 'hindi');
-    } else {
-      voiceService.speak('Please verify your identity', 'english');
-    }
-    setCurrentStep(3); // Moves to Step 3: Identity & OTP
+    voiceService.speak(t('proceedPrompt'), language);
+    setCurrentStep(3);
   };
 
   const handleSos = () => {
-    alert('आपातकालीन सहायता अनुरोध दर्ज किया गया! OPD सहायता कर्मी आ रहे हैं। (Emergency alert triggered)');
+    alert(t('sosButton'));
   };
 
   const handleStaffHelp = () => {
-    alert('कियोस्क मित्र सहायता को सूचित कर दिया गया है। (Staff Help requested)');
+    alert(t('staffHelp'));
   };
 
   return (
@@ -41,7 +45,7 @@ export function App() {
         {currentStep === 1 || currentStep === 2 ? (
           <LanguageAndModeScreen
             selectedLanguage={language}
-            onLanguageChange={setLanguage}
+            onLanguageChange={handleLanguageChange}
             selectedMode={mode}
             onModeChange={setMode}
             onProceed={handleProceedFromLanguageAndMode}
@@ -51,26 +55,26 @@ export function App() {
           <div className="max-w-4xl mx-auto my-12 p-8 bg-white rounded-3xl shadow-lg border border-outline-variant/30 text-center">
             <span className="material-symbols-outlined text-[60px] text-primary mb-3">lock_clock</span>
             <h2 className="font-noto text-3xl font-extrabold text-on-surface mb-2">
-              चरण {currentStep}: आगामी चरण
+              {t('proceed')} — Step {currentStep}
             </h2>
             <p className="text-on-surface-variant text-lg mb-6">
-              Step {currentStep} will be built in our next review phase!
+              Step {currentStep} will be built in the next review phase!
             </p>
             <button
               onClick={() => setCurrentStep(1)}
               className="h-14 px-8 rounded-2xl bg-primary text-white font-bold text-base active:scale-95 transition-all cursor-pointer shadow-md"
             >
-              ← वापस भाषा चयन पर जाएं / Back to Step 1
+              ← {t('selectLanguageHeading')}
             </button>
           </div>
         )}
       </main>
 
-      {/* FOOTER ASSISTANCE STRIP */}
+      {/* FOOTER */}
       <footer className="w-full bg-white border-t border-surface-container-high py-3 px-4 sm:px-8 text-center text-xs text-on-surface-variant flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2 text-primary font-semibold">
           <span className="material-symbols-outlined text-[18px]">verified_user</span>
-          <span>SWASTLOK Clinical Context Intelligence • Smart India Hackathon 2026</span>
+          <span>SwasthyaLok Clinical Context Intelligence • Smart India Hackathon 2026</span>
         </div>
         <div className="text-on-surface-variant/80 font-medium">
           ABHA / ABDM Compatible • AI4Bharat Indic Voice Layer • Team Synaptix

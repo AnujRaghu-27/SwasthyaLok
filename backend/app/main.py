@@ -1,5 +1,5 @@
 """
-SWASTLOK — Backend Service
+SwasthyaLok — Backend Service
 FastAPI Single Monolithic Backend
 Team Synaptix | Smart India Hackathon 2026
 """
@@ -8,9 +8,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
-    title="SWASTLOK Clinical Intelligence API",
+    title="SwasthyaLok Clinical Intelligence API",
     version="1.0.0",
-    description="Backend service for SWASTLOK OPD Kiosk & Doctor Portal"
+    description="Backend service for SwasthyaLok OPD Kiosk & Doctor Portal"
 )
 
 # Enable CORS for local development
@@ -26,7 +26,7 @@ app.add_middleware(
 async def health_check():
     return {
         "status": "healthy",
-        "service": "Swastlok Clinical Backend",
+        "service": "SwasthyaLok Clinical Backend",
         "version": "1.0.0",
         "mode": "PROTOTYPE"
     }

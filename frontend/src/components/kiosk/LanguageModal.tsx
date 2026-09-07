@@ -1,6 +1,8 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Language } from '../../types';
 import { voiceService } from '../../services/voice';
+import { getVoicePrompt } from '../../i18n.config';
 
 interface LanguageModalProps {
   isOpen: boolean;
@@ -9,20 +11,13 @@ interface LanguageModalProps {
   selectedLanguage: Language;
 }
 
-interface RegionalLanguageItem {
-  id: Language;
-  nameNative: string;
-  nameEn: string;
-  samplePhrase: string;
-}
-
-const REGIONAL_LANGUAGES: RegionalLanguageItem[] = [
-  { id: 'bengali', nameNative: 'বাংলা', nameEn: 'Bengali', samplePhrase: 'স্বাগতম' },
-  { id: 'tamil', nameNative: 'தமிழ்', nameEn: 'Tamil', samplePhrase: 'வரவேற்பு' },
-  { id: 'telugu', nameNative: 'తెలుగు', nameEn: 'Telugu', samplePhrase: 'స్వాగతం' },
-  { id: 'gujarati', nameNative: 'ગુજરાતી', nameEn: 'Gujarati', samplePhrase: 'સ્વાગત છે' },
-  { id: 'kannada', nameNative: 'ಕನ್ನಡ', nameEn: 'Kannada', samplePhrase: 'ಸ್ವಾಗತ' },
-  { id: 'punjabi', nameNative: 'ਪੰਜਾਬੀ', nameEn: 'Punjabi', samplePhrase: 'ਜੀ ਆਇਆਂ ਨੂੰ' },
+const REGIONAL_LANGUAGES: { id: Language; nameNative: string; nameEn: string }[] = [
+  { id: 'bengali',  nameNative: 'বাংলা',      nameEn: 'Bengali'  },
+  { id: 'tamil',    nameNative: 'தமிழ்',       nameEn: 'Tamil'    },
+  { id: 'telugu',   nameNative: 'తెలుగు',      nameEn: 'Telugu'   },
+  { id: 'gujarati', nameNative: 'ગુજરાતી',     nameEn: 'Gujarati' },
+  { id: 'kannada',  nameNative: 'ಕನ್ನಡ',       nameEn: 'Kannada'  },
+  { id: 'punjabi',  nameNative: 'ਪੰਜਾਬੀ',      nameEn: 'Punjabi'  },
 ];
 
 export const LanguageModal: React.FC<LanguageModalProps> = ({
@@ -31,10 +26,13 @@ export const LanguageModal: React.FC<LanguageModalProps> = ({
   onSelectLanguage,
   selectedLanguage,
 }) => {
+  const { t } = useTranslation('common');
+
   if (!isOpen) return null;
 
-  const handleSelect = (lang: Language, phrase: string) => {
-    voiceService.speak(phrase, lang);
+  const handleSelect = (lang: Language) => {
+    // Speak the greeting in the target language using getVoicePrompt
+    voiceService.speak(getVoicePrompt(lang, 'voiceSelectPrompt'), lang);
     onSelectLanguage(lang);
     onClose();
   };
@@ -46,10 +44,10 @@ export const LanguageModal: React.FC<LanguageModalProps> = ({
         <div className="flex items-center justify-between mb-6 pb-4 border-b border-surface-container-high">
           <div>
             <h3 className="font-noto text-2xl sm:text-3xl font-bold text-on-surface">
-              अन्य भारतीय भाषाएं चुनें
+              {t('modalTitle')}
             </h3>
             <p className="text-sm sm:text-base text-on-surface-variant mt-1">
-              Select from more regional Indian languages powered by AI4Bharat
+              {t('modalSubtitle')}
             </p>
           </div>
           <button
@@ -68,7 +66,7 @@ export const LanguageModal: React.FC<LanguageModalProps> = ({
             return (
               <button
                 key={lang.id}
-                onClick={() => handleSelect(lang.id, lang.samplePhrase)}
+                onClick={() => handleSelect(lang.id)}
                 className={`h-28 p-4 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
                   isSelected
                     ? 'bg-primary text-white shadow-lg shadow-primary/20 ring-4 ring-primary-fixed scale-[1.02]'
@@ -79,6 +77,9 @@ export const LanguageModal: React.FC<LanguageModalProps> = ({
                 <span className={`text-xs sm:text-sm font-medium mt-1 ${isSelected ? 'text-white/80' : 'text-on-surface-variant'}`}>
                   {lang.nameEn}
                 </span>
+                {isSelected && (
+                  <span className="material-symbols-outlined text-[18px] mt-1 text-white/90">check_circle</span>
+                )}
               </button>
             );
           })}
@@ -90,7 +91,7 @@ export const LanguageModal: React.FC<LanguageModalProps> = ({
             onClick={onClose}
             className="h-14 px-8 rounded-2xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-base active:scale-95 transition-all cursor-pointer"
           >
-            रद्द करें / Cancel
+            {t('modalCancel')}
           </button>
         </div>
       </div>

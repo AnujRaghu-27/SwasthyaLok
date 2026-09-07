@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { voiceService } from '../../services/voice';
 
 interface KioskHeaderProps {
@@ -8,6 +9,7 @@ interface KioskHeaderProps {
 
 export const KioskHeader: React.FC<KioskHeaderProps> = ({ onSosClick, onStaffHelp }) => {
   const [isMuted, setIsMuted] = useState(false);
+  const { t } = useTranslation('common');
 
   const handleToggleVolume = () => {
     const muted = voiceService.toggleMute();
@@ -24,17 +26,17 @@ export const KioskHeader: React.FC<KioskHeaderProps> = ({ onSosClick, onStaffHel
           </div>
           <div className="flex flex-col">
             <span className="font-noto text-2xl sm:text-3xl font-extrabold text-primary tracking-tight leading-none">
-              SWASTLOK
+              SwasthyaLok
             </span>
             <span className="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider mt-0.5">
-              AI Universal OPD Kiosk System
+              {t('headerSubtitle')}
             </span>
           </div>
-          
+
           {/* AI4Bharat Status Pill */}
           <div className="hidden lg:flex items-center gap-2 bg-surface-container-low border border-primary/20 px-3.5 py-1.5 rounded-full">
             <span className="material-symbols-outlined text-primary text-[18px]">graphic_eq</span>
-            <span className="text-xs text-primary font-bold">AI4Bharat ASR/TTS Layer Active</span>
+            <span className="text-xs text-primary font-bold">{t('aiLayerActive')}</span>
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
           </div>
         </div>
@@ -49,7 +51,7 @@ export const KioskHeader: React.FC<KioskHeaderProps> = ({ onSosClick, onStaffHel
           >
             <span className="material-symbols-outlined text-on-surface-variant text-[20px]">support_agent</span>
             <div className="flex flex-col text-left">
-              <span className="text-[10px] text-on-surface-variant font-medium leading-none">OPD Help / सहायता</span>
+              <span className="text-[10px] text-on-surface-variant font-medium leading-none">{t('opdHelp')}</span>
               <span className="text-xs font-bold text-on-surface leading-tight">1800-108-OPD</span>
             </div>
           </button>
@@ -57,7 +59,7 @@ export const KioskHeader: React.FC<KioskHeaderProps> = ({ onSosClick, onStaffHel
           {/* Voice Volume Control & Equalizer */}
           <div className="flex items-center gap-1.5 bg-surface-container px-2.5 py-1.5 rounded-xl border border-outline-variant/30">
             <button
-              aria-label={isMuted ? "Unmute Voice Guidance" : "Mute Voice Guidance"}
+              aria-label={isMuted ? 'Unmute Voice Guidance' : 'Mute Voice Guidance'}
               onClick={handleToggleVolume}
               className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
                 isMuted ? 'bg-error-container text-error' : 'bg-white text-on-surface hover:bg-surface-dim shadow-sm'
@@ -83,7 +85,7 @@ export const KioskHeader: React.FC<KioskHeaderProps> = ({ onSosClick, onStaffHel
             type="button"
           >
             <span className="material-symbols-outlined text-[22px]">e911_emergency</span>
-            <span className="whitespace-nowrap">आपातकाल / SOS</span>
+            <span className="whitespace-nowrap">{t('sosButton')}</span>
           </button>
         </div>
       </div>
