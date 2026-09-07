@@ -38,5 +38,16 @@
   "voiceSelectPrompt": "স্বাগতম, আপনি বাংলা ভাষা বেছে নিয়েছেন",
   "voiceDemoPrompt": "স্বাগতম, আপনি আপনার রোগ বা সমস্যা বলে জানাতে পারেন",
   "touchDemoPrompt": "স্ক্রিনের বড় বোতামে স্পর্শ করে এগিয়ে যান",
-  "proceedPrompt": "অনুগ্রহ করে আপনার পরিচয় যাচাই করুন"
+  "proceedPrompt": "অনুগ্রহ করে আপনার পরিচয় যাচাই করুন",
+  "printedSlip": "স্লিপ প্রিন্ট হয়েছে",
+  "changePatient": "রোগী পরিবর্তন করুন",
+  "ageGenderLabel": "বয়স / লিঙ্গ",
+  "consentActive": "ABDM সম্মতি সক্রিয়",
+  "otpModalTitle": "OTP যাচাই",
+  "followupNo": "না",
+  "followupYes": "হ্যাঁ",
+  "followupYesRedFlag": "হ্যাঁ (রেড-ফ্ল্যাগ)",
+  "followupYesHighBP": "হ্যাঁ (উচ্চ BP)",
+  "modeVoice": "কণ্ঠস্বর",
+  "modeTouch": "টাচ স্ক্রিন"
 }

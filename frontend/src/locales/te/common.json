@@ -38,5 +38,16 @@
   "voiceSelectPrompt": "నమస్కారం, మీరు తెలుగు భాషను ఎంచుకున్నారు",
   "voiceDemoPrompt": "నమస్కారం, మీరు మీ జబ్బు లేదా సమస్యను మాట్లాడి చెప్పవచ్చు",
   "touchDemoPrompt": "స్క్రీన్‌పై పెద్ద బటన్లను తాకి ముందుకు వెళ్ళండి",
-  "proceedPrompt": "దయచేసి మీ గుర్తింపును ధృవీకరించండి"
+  "proceedPrompt": "దయచేసి మీ గుర్తింపును ధృవీకరించండి",
+  "printedSlip": "ప్రింట్ అయింది",
+  "changePatient": "రోగిని మార్చండి",
+  "ageGenderLabel": "వయస్సు / లింగం",
+  "consentActive": "ABDM సమ్మతి చురుగ్గా",
+  "otpModalTitle": "OTP ధృవీకరణ",
+  "followupNo": "లేదు",
+  "followupYes": "అవును",
+  "followupYesRedFlag": "అవును (రెడ్-ఫ్లాగ్)",
+  "followupYesHighBP": "అవును (హై BP)",
+  "modeVoice": "వాయిస్",
+  "modeTouch": "టచ్ స్క్రీన్"
 }

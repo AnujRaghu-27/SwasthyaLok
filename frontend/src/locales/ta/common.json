@@ -38,5 +38,16 @@
   "voiceSelectPrompt": "வணக்கம், நீங்கள் தமிழ் மொழியை தேர்ந்தெடுத்தீர்கள்",
   "voiceDemoPrompt": "வணக்கம், உங்கள் நோய் அல்லது பிரச்சனையை பேசி தெரிவிக்கலாம்",
   "touchDemoPrompt": "திரையிலுள்ள பெரிய பொத்தான்களை தொட்டு முன்னேறுங்கள்",
-  "proceedPrompt": "உங்கள் அடையாளத்தை சரிபார்க்கவும்"
+  "proceedPrompt": "உங்கள் அடையாளத்தை சரிபார்க்கவும்",
+  "printedSlip": "அச்சிடப்பட்டது",
+  "changePatient": "நோயாளியை மாற்று",
+  "ageGenderLabel": "வயது / பாலினம்",
+  "consentActive": "ABDM ஒப்புதல் செயலில்",
+  "otpModalTitle": "OTP சரிபார்ப்பு",
+  "followupNo": "இல்லை",
+  "followupYes": "ஆம்",
+  "followupYesRedFlag": "ஆம் (சிவப்பு-கொடி)",
+  "followupYesHighBP": "ஆம் (உயர் BP)",
+  "modeVoice": "குரல்",
+  "modeTouch": "தொட்டுத்திரை"
 }

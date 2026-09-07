@@ -38,5 +38,16 @@
   "voiceSelectPrompt": "ਜੀ ਆਇਆਂ ਨੂੰ, ਤੁਸੀਂ ਪੰਜਾਬੀ ਭਾਸ਼ਾ ਚੁਣੀ ਹੈ",
   "voiceDemoPrompt": "ਜੀ ਆਇਆਂ ਨੂੰ, ਤੁਸੀਂ ਆਪਣੀ ਬਿਮਾਰੀ ਜਾਂ ਸਮੱਸਿਆ ਬੋਲ ਕੇ ਦੱਸ ਸਕਦੇ ਹੋ",
   "touchDemoPrompt": "ਸਕਰੀਨ ਤੇ ਵੱਡੇ ਬਟਨਾਂ ਨੂੰ ਛੂਹ ਕੇ ਅੱਗੇ ਵਧੋ",
-  "proceedPrompt": "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੀ ਪਛਾਣ ਪੁਸ਼ਟੀ ਕਰੋ"
+  "proceedPrompt": "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੀ ਪਛਾਣ ਪੁਸ਼ਟੀ ਕਰੋ",
+  "printedSlip": "ਪਰਚੀ ਨਿਕਲੀ",
+  "changePatient": "ਮਰੀਜ਼ ਬਦਲੋ",
+  "ageGenderLabel": "ਉਮਰ / ਲਿੰਗ",
+  "consentActive": "ABDM ਸਹਿਮਤੀ ਸਕਿਰਿਆ",
+  "otpModalTitle": "OTP ਜਾਂਚ",
+  "followupNo": "ਨਹੀਂ",
+  "followupYes": "ਹਾਂ",
+  "followupYesRedFlag": "ਹਾਂ (ਰੈੱਡ-ਫਲੈਗ)",
+  "followupYesHighBP": "ਹਾਂ (ਉੱਚ BP)",
+  "modeVoice": "ਆਵਾਜ਼",
+  "modeTouch": "ਟੱਚ ਸਕਰੀਨ"
 }

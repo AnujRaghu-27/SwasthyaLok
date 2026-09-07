@@ -38,5 +38,16 @@
   "voiceSelectPrompt": "ಸ್ವಾಗತ, ನೀವು ಕನ್ನಡ ಭಾಷೆ ಆಯ್ಕೆ ಮಾಡಿದ್ದೀರಿ",
   "voiceDemoPrompt": "ಸ್ವಾಗತ, ನೀವು ನಿಮ್ಮ ಕಾಯಿಲೆ ಅಥವಾ ಸಮಸ್ಯೆಯನ್ನು ಮಾತನಾಡಿ ತಿಳಿಸಬಹುದು",
   "touchDemoPrompt": "ಸ್ಕ್ರೀನ್‌ನಲ್ಲಿ ದೊಡ್ಡ ಬಟನ್‌ಗಳನ್ನು ಮುಟ್ಟಿ ಮುಂದಕ್ಕೆ ಹೋಗಿ",
-  "proceedPrompt": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಗುರುತನ್ನು ಪರಿಶೀಲಿಸಿ"
+  "proceedPrompt": "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಗುರುತನ್ನು ಪರಿಶೀಲಿಸಿ",
+  "printedSlip": "ಪ್ರಿಂಟ್ ಆಯಿತು",
+  "changePatient": "ರೋಗಿ ಬದಲಾಯಿಸಿ",
+  "ageGenderLabel": "ವಯಸ್ಸು / ಲಿಂಗ",
+  "consentActive": "ABDM ಒಪ್ಪಿಗೆ ಸಕ್ರಿಯ",
+  "otpModalTitle": "OTP ಪರಿಶೀಲನೆ",
+  "followupNo": "ಇಲ್ಲ",
+  "followupYes": "ಹೌದು",
+  "followupYesRedFlag": "ಹೌದು (ರೆಡ್-ಫ್ಲ್ಯಾಗ್)",
+  "followupYesHighBP": "ಹೌದು (ಹೈ BP)",
+  "modeVoice": "ವಾಯಿಸ್",
+  "modeTouch": "ಟಚ್ ಸ್ಕ್ರೀನ್"
 }

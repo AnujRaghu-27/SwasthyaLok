@@ -277,7 +277,7 @@ export const LanguageAndIdentityScreen: React.FC<LanguageAndIdentityScreenProps>
                 onClick={handleResetIdentity}
                 className="px-4 py-2 rounded-xl bg-white hover:bg-red-50 text-error border border-error/30 text-xs sm:text-sm font-bold shadow-sm cursor-pointer transition-all self-start sm:self-auto"
               >
-                बदलें / Change Patient
+                {t('changePatient')}
               </button>
             </div>
 
@@ -288,13 +288,13 @@ export const LanguageAndIdentityScreen: React.FC<LanguageAndIdentityScreenProps>
               </div>
               <div className="bg-white p-4 rounded-2xl border border-primary/20">
                 <span className="text-xs font-bold text-on-surface-variant uppercase">{t('patientAge')} & {t('patientGender')}</span>
-                <p className="text-lg font-bold text-on-surface mt-0.5">{patientIdentity.age} वर्ष / {patientIdentity.gender}</p>
+                <p className="text-lg font-bold text-on-surface mt-0.5">{patientIdentity.age} · {patientIdentity.gender}</p>
               </div>
               <div className="bg-white p-4 rounded-2xl border border-primary/20 flex items-center gap-3">
                 <span className="material-symbols-outlined text-primary text-[28px]">lock</span>
                 <div>
                   <span className="text-xs font-bold text-on-surface-variant block">ABDM Consent</span>
-                  <span className="text-xs font-semibold text-emerald-700">सहमति स्वीकृत / Active</span>
+                  <span className="text-xs font-semibold text-emerald-700">{t('consentActive')}</span>
                 </div>
               </div>
             </div>
@@ -520,7 +520,7 @@ export const LanguageAndIdentityScreen: React.FC<LanguageAndIdentityScreenProps>
                 <span className="material-symbols-outlined text-[32px]">mark_email_read</span>
               </div>
               <h3 className="font-noto text-2xl font-extrabold text-on-surface">
-                OTP Verification / ओटीपी सत्यापन
+                {t('otpModalTitle')}
               </h3>
               <p className="text-xs sm:text-sm text-on-surface-variant mt-1">
                 Enter the 6-digit OTP sent to linked mobile: <strong className="text-primary">+91 98XXX-XX210</strong>

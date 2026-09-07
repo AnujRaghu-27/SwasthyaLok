@@ -106,7 +106,7 @@ export const PatientHomeScreen: React.FC<PatientHomeScreenProps> = ({
                 Step 4 of 5 • Patient Home
               </span>
               <span className="text-xs font-bold text-on-surface-variant">
-                Mode: {selectedMode === 'voice' ? 'Speak / Voice' : 'Touch Screen'}
+                Mode: {selectedMode === 'voice' ? t('modeVoice') : t('modeTouch')}
               </span>
             </div>
             <h2 className="font-noto text-2xl sm:text-3xl font-extrabold text-on-surface mt-0.5">
@@ -442,7 +442,7 @@ export const PatientHomeScreen: React.FC<PatientHomeScreenProps> = ({
                           followup1 === 'no' ? 'bg-primary text-white' : 'bg-surface-container text-on-surface'
                         }`}
                       >
-                        नहीं / No
+                        {t('followupNo')}
                       </button>
                       <button
                         type="button"
@@ -451,7 +451,7 @@ export const PatientHomeScreen: React.FC<PatientHomeScreenProps> = ({
                           followup1 === 'yes' ? 'bg-error text-white' : 'bg-surface-container text-on-surface'
                         }`}
                       >
-                        हाँ / Yes (Red-Flag)
+                        {t('followupYesRedFlag')}
                       </button>
                     </div>
                   </div>
@@ -469,7 +469,7 @@ export const PatientHomeScreen: React.FC<PatientHomeScreenProps> = ({
                           followup2 === 'yes' ? 'bg-primary text-white' : 'bg-surface-container text-on-surface'
                         }`}
                       >
-                        हाँ / Yes (High BP)
+                        {t('followupYesHighBP')}
                       </button>
                       <button
                         type="button"
@@ -478,7 +478,7 @@ export const PatientHomeScreen: React.FC<PatientHomeScreenProps> = ({
                           followup2 === 'no' ? 'bg-primary text-white' : 'bg-surface-container text-on-surface'
                         }`}
                       >
-                        नहीं / No
+                        {t('followupNo')}
                       </button>
                     </div>
                   </div>

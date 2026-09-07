@@ -97,5 +97,16 @@
   "printSlip": "पर्ची प्रिंट करें",
   "sendSms": "मोबाइल पर SMS भेजें",
   "finishSession": "पूर्ण • अगला मरीज़",
-  "liveTracking": "लाइव OPD कतार देखने हेतु फोन से QR स्कैन करें"
+  "liveTracking": "लाइव OPD कतार देखने हेतु फोन से QR स्कैन करें",
+  "printedSlip": "पर्ची निकल गई",
+  "changePatient": "मरीज़ बदलें",
+  "ageGenderLabel": "उम्र / लिंग",
+  "consentActive": "ABDM सहमति सक्रिय",
+  "otpModalTitle": "OTP सत्यापन",
+  "followupNo": "नहीं",
+  "followupYes": "हाँ",
+  "followupYesRedFlag": "हाँ (रेड-फ्लैग)",
+  "followupYesHighBP": "हाँ (हाई BP)",
+  "modeVoice": "आवाज़",
+  "modeTouch": "टच स्क्रीन"
 }

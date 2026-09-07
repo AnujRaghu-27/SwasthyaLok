@@ -177,7 +177,7 @@ export const TokenSlipScreen: React.FC<TokenSlipScreenProps> = ({
             <span className="material-symbols-outlined text-[32px]">
               {isPrinted ? 'check_circle' : 'print'}
             </span>
-            <span>{isPrinted ? 'Printed / पर्ची निकल गई' : t('printSlip')}</span>
+            <span>{isPrinted ? t('printedSlip') : t('printSlip')}</span>
           </button>
 
           {/* SMS Send Button */}

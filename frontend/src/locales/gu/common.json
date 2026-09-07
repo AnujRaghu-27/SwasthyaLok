@@ -38,5 +38,16 @@
   "voiceSelectPrompt": "સ્વાગત છે, તમે ગુજરાતી ભાષા પસંદ કરી છે",
   "voiceDemoPrompt": "સ્વાગત છે, તમે તમારી બીમારી અથવા સમસ્યા બોલીને જણાવી શકો છો",
   "touchDemoPrompt": "સ્ક્રીન પર મોટા બટન સ્પર્શ કરીને આગળ વધો",
-  "proceedPrompt": "કૃપા કરી તમારી ઓળખ ચકાસો"
+  "proceedPrompt": "કૃપા કરી તમારી ઓળખ ચકાસો",
+  "printedSlip": "પ્રિન્ટ થઈ ગઈ",
+  "changePatient": "દર્દી બદલો",
+  "ageGenderLabel": "ઉંમર / જાતિ",
+  "consentActive": "ABDM સહમતિ સક્રિય",
+  "otpModalTitle": "OTP ચકાસણી",
+  "followupNo": "ના",
+  "followupYes": "હા",
+  "followupYesRedFlag": "હા (રેડ-ફ્લેગ)",
+  "followupYesHighBP": "હા (ઉચ્ચ BP)",
+  "modeVoice": "અવાજ",
+  "modeTouch": "ટચ સ્ક્રીન"
 }

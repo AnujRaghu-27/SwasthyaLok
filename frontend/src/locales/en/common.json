@@ -97,5 +97,16 @@
   "printSlip": "Print OPD Slip",
   "sendSms": "Send to Phone via SMS",
   "finishSession": "Done • Next Patient",
-  "liveTracking": "Scan QR to track live OPD queue on your phone"
+  "liveTracking": "Scan QR to track live OPD queue on your phone",
+  "printedSlip": "Printed",
+  "changePatient": "Change Patient",
+  "ageGenderLabel": "Age / Gender",
+  "consentActive": "ABDM Consent Active",
+  "otpModalTitle": "OTP Verification",
+  "followupNo": "No",
+  "followupYes": "Yes",
+  "followupYesRedFlag": "Yes (Red-Flag)",
+  "followupYesHighBP": "Yes (High BP)",
+  "modeVoice": "Voice",
+  "modeTouch": "Touch Screen"
 }

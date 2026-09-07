@@ -38,5 +38,16 @@
   "voiceSelectPrompt": "नमस्कार, आपण मराठी भाषा निवडली आहे",
   "voiceDemoPrompt": "नमस्कार, आपण आपला आजार किंवा समस्या बोलून सांगू शकता",
   "touchDemoPrompt": "स्क्रीनवरील मोठ्या बटणांना स्पर्श करून पुढे जा",
-  "proceedPrompt": "कृपया आपली ओळख पडताळा"
+  "proceedPrompt": "कृपया आपली ओळख पडताळा",
+  "printedSlip": "पर्ची छापली",
+  "changePatient": "रुग्ण बदला",
+  "ageGenderLabel": "वय / लिंग",
+  "consentActive": "ABDM संमती सक्रिय",
+  "otpModalTitle": "OTP सत्यापन",
+  "followupNo": "नाही",
+  "followupYes": "हो",
+  "followupYesRedFlag": "हो (रेड-फ्लॅग)",
+  "followupYesHighBP": "हो (उच्च BP)",
+  "modeVoice": "आवाज",
+  "modeTouch": "टच स्क्रीन"
 }
