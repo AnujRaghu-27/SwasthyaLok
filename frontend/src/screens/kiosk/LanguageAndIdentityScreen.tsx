@@ -35,6 +35,8 @@ export const LanguageAndIdentityScreen: React.FC<LanguageAndIdentityScreenProps>
   const [inputVal, setInputVal] = useState<string>(patientIdentity.idNumber || '');
   const [mobileVal, setMobileVal] = useState<string>('');
   const [isVerifying, setIsVerifying] = useState(false);
+  const [isOtpOpen, setIsOtpOpen] = useState(false);
+  const [otpVal, setOtpVal] = useState<string>('482910');
 
   const showAudioToast = (msg: string) => {
     setAudioToast(msg);
@@ -61,7 +63,6 @@ export const LanguageAndIdentityScreen: React.FC<LanguageAndIdentityScreenProps>
     if (activeTab === 'abha') {
       if (inputVal.replace(/\D/g, '').length < 14) {
         const raw = (inputVal + digit).replace(/\D/g, '');
-        // format as 91-XXXX-XXXX-XXXX
         let formatted = raw;
         if (raw.length > 2) formatted = `${raw.slice(0, 2)}-${raw.slice(2)}`;
         if (raw.length > 6) formatted = `${raw.slice(0, 2)}-${raw.slice(2, 6)}-${raw.slice(6)}`;
@@ -85,43 +86,43 @@ export const LanguageAndIdentityScreen: React.FC<LanguageAndIdentityScreenProps>
     setInputVal('');
   };
 
-  // Verify Action
+  // Open OTP Verification
   const handleVerify = () => {
     if (!inputVal) return;
     setIsVerifying(true);
     setTimeout(() => {
       setIsVerifying(false);
-      const verifiedPatient: PatientIdentity = {
-        type: activeTab,
-        idNumber: inputVal || '91-8721-3940-1029',
-        name: 'Ramesh Kumar',
-        age: 48,
-        gender: 'Male',
-        isVerified: true,
-        consentGiven: true,
-      };
-      onIdentityChange(verifiedPatient);
-      showAudioToast(t('patientVerifiedTitle'));
-      voiceService.speak(t('welcomePatientVoice'), selectedLanguage);
-    }, 600);
+      setIsOtpOpen(true);
+      setOtpVal('482910');
+      showAudioToast('OTP sent to linked mobile: +91 98XXX-XX210');
+      voiceService.speak('OTP sent to your registered mobile number', selectedLanguage);
+    }, 400);
   };
 
-  // 1-Click Demo Patient
-  const handleAutofillDemo = () => {
-    const demoPatient: PatientIdentity = {
-      type: 'abha',
-      idNumber: '91-8721-3940-1029',
-      mobile: '9876543210',
+  // Complete OTP Verification
+  const handleConfirmOtp = () => {
+    setIsOtpOpen(false);
+    const verifiedPatient: PatientIdentity = {
+      type: activeTab,
+      idNumber: inputVal || '91-8721-3940-1029',
+      mobile: '+91 9876543210',
       name: 'Ramesh Kumar',
       age: 48,
       gender: 'Male',
       isVerified: true,
       consentGiven: true,
     };
-    setInputVal('91-8721-3940-1029');
-    onIdentityChange(demoPatient);
+    onIdentityChange(verifiedPatient);
     showAudioToast(t('patientVerifiedTitle'));
     voiceService.speak(t('welcomePatientVoice'), selectedLanguage);
+  };
+
+  // 1-Click Demo Patient
+  const handleAutofillDemo = () => {
+    setInputVal('91-8721-3940-1029');
+    setIsOtpOpen(true);
+    setOtpVal('482910');
+    showAudioToast('OTP sent to linked mobile: +91 98XXX-XX210');
   };
 
   // Reset identity to re-enter
@@ -227,7 +228,7 @@ export const LanguageAndIdentityScreen: React.FC<LanguageAndIdentityScreenProps>
         </div>
       </section>
 
-      {/* ── SECTION 2: PATIENT IDENTIFICATION & VERIFICATION (Replaces Choose Mode) ── */}
+      {/* ── SECTION 2: PATIENT IDENTIFICATION & VERIFICATION ── */}
       <section aria-labelledby="identityHeading" className="w-full mb-8">
         <div className="flex items-center justify-between gap-4 mb-5">
           <div className="flex items-center gap-3.5">
@@ -503,6 +504,114 @@ export const LanguageAndIdentityScreen: React.FC<LanguageAndIdentityScreenProps>
           <span className="material-symbols-outlined text-[36px] sm:text-[40px]">arrow_forward</span>
         </button>
       </div>
+
+      {/* ── OTP VERIFICATION MODAL ── */}
+      {isOtpOpen && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-outline-variant/30">
+            {/* Simulated SMS notification */}
+            <div className="bg-emerald-50 border border-primary/30 p-3 rounded-2xl flex items-center gap-2.5 mb-5 text-xs text-primary font-bold">
+              <span className="material-symbols-outlined text-[20px]">sms</span>
+              <span>ABDM SMS: 482910 is your SwasthyaLok verification OTP</span>
+            </div>
+
+            <div className="text-center mb-6">
+              <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto mb-3">
+                <span className="material-symbols-outlined text-[32px]">mark_email_read</span>
+              </div>
+              <h3 className="font-noto text-2xl font-extrabold text-on-surface">
+                OTP Verification / ओटीपी सत्यापन
+              </h3>
+              <p className="text-xs sm:text-sm text-on-surface-variant mt-1">
+                Enter the 6-digit OTP sent to linked mobile: <strong className="text-primary">+91 98XXX-XX210</strong>
+              </p>
+            </div>
+
+            {/* 6 Digit Display */}
+            <div className="flex justify-center gap-2 sm:gap-3 mb-6">
+              {[0, 1, 2, 3, 4, 5].map((idx) => (
+                <div
+                  key={idx}
+                  className={`w-12 h-14 sm:w-14 sm:h-16 rounded-2xl border-2 flex items-center justify-center text-2xl font-bold font-mono transition-all ${
+                    otpVal[idx]
+                      ? 'border-primary bg-emerald-50 text-primary'
+                      : idx === otpVal.length
+                      ? 'border-primary ring-2 ring-primary/20 bg-white'
+                      : 'border-outline-variant/40 bg-surface-container'
+                  }`}
+                >
+                  {otpVal[idx] || ''}
+                </div>
+              ))}
+            </div>
+
+            {/* Autofill Demo OTP Button */}
+            <div className="text-center mb-6">
+              <button
+                type="button"
+                onClick={() => setOtpVal('482910')}
+                className="px-4 py-2 bg-surface-container hover:bg-emerald-50 text-primary font-bold text-xs rounded-xl border border-primary/20 transition-all cursor-pointer"
+              >
+                ⚡ Autofill OTP: 482910
+              </button>
+            </div>
+
+            {/* Numeric Keypad for OTP */}
+            <div className="grid grid-cols-3 gap-2.5 mb-6">
+              {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((digit) => (
+                <button
+                  key={digit}
+                  type="button"
+                  onClick={() => { if (otpVal.length < 6) setOtpVal(prev => prev + digit); }}
+                  className="h-12 rounded-xl bg-surface-container hover:bg-surface-container-high font-mono text-xl font-bold text-on-surface transition-all active:scale-95"
+                >
+                  {digit}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={() => setOtpVal('')}
+                className="h-12 rounded-xl bg-surface-container hover:bg-red-50 text-error font-bold text-xs transition-all active:scale-95"
+              >
+                Clear
+              </button>
+              <button
+                type="button"
+                onClick={() => { if (otpVal.length < 6) setOtpVal(prev => prev + '0'); }}
+                className="h-12 rounded-xl bg-surface-container hover:bg-surface-container-high font-mono text-xl font-bold text-on-surface transition-all active:scale-95"
+              >
+                0
+              </button>
+              <button
+                type="button"
+                onClick={() => setOtpVal(prev => prev.slice(0, -1))}
+                className="h-12 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-sm transition-all active:scale-95 flex items-center justify-center"
+              >
+                <span className="material-symbols-outlined text-[20px]">backspace</span>
+              </button>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => setIsOtpOpen(false)}
+                className="flex-1 h-14 rounded-2xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-sm transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={otpVal.length !== 6}
+                onClick={handleConfirmOtp}
+                className="flex-1 h-14 rounded-2xl bg-primary hover:bg-primary-dark disabled:bg-surface-container disabled:text-on-surface-variant text-white font-bold text-sm shadow-md shadow-primary/20 transition-all cursor-pointer disabled:cursor-not-allowed"
+              >
+                Verify & Fetch ABDM
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── REGIONAL LANGUAGES MODAL ── */}
       <LanguageModal
