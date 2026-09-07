@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { Language, InteractionMode, KioskStep, PatientIdentity } from './types';
+import type { Language, InteractionMode, KioskStep, PatientIdentity, TriageData } from './types';
 import { KioskHeader } from './components/kiosk/KioskHeader';
 import { StepProgress } from './components/kiosk/StepProgress';
 import { LanguageAndIdentityScreen } from './screens/kiosk/LanguageAndIdentityScreen';
 import { ModeSelectionScreen } from './screens/kiosk/ModeSelectionScreen';
+import { PatientHomeScreen } from './screens/kiosk/PatientHomeScreen';
+import { OPD_DEPARTMENTS } from './screens/kiosk/ServiceTriageScreen';
+import { TokenSlipScreen } from './screens/kiosk/TokenSlipScreen';
 import { voiceService } from './services/voice';
 import i18n, { langToLocale } from './i18n.config';
 
@@ -18,11 +21,18 @@ export function App() {
     isVerified: false,
     consentGiven: true,
   });
+  const [triageData, setTriageData] = useState<TriageData>({
+    department: OPD_DEPARTMENTS[0],
+    chiefComplaint: 'Fever, Sore Throat & Headache',
+    symptoms: ['fever'],
+    duration: '3 days',
+    severity: 'moderate',
+    extractedVia: 'voice',
+  });
   const { t } = useTranslation('common');
 
   const handleLanguageChange = (lang: Language) => {
     setLanguage(lang);
-    // Tell i18next to switch — every useTranslation() hook updates automatically
     i18n.changeLanguage(langToLocale[lang]);
   };
 
@@ -33,6 +43,23 @@ export function App() {
 
   const handleProceedFromMode = () => {
     setCurrentStep(4);
+  };
+
+  const handleProceedFromTriage = (data: TriageData) => {
+    setTriageData(data);
+    setCurrentStep(5);
+    voiceService.speak(t('tokenHeading'), language);
+  };
+
+  const handleResetSession = () => {
+    setCurrentStep(1);
+    setPatientIdentity({
+      type: 'abha',
+      idNumber: '',
+      isVerified: false,
+      consentGiven: true,
+    });
+    setMode('voice');
   };
 
   const handleSos = () => {
@@ -72,30 +99,24 @@ export function App() {
             onBack={() => setCurrentStep(1)}
             onStaffHelp={handleStaffHelp}
           />
+        ) : currentStep === 4 ? (
+          <PatientHomeScreen
+            selectedLanguage={language}
+            selectedMode={mode}
+            onModeChange={setMode}
+            patientIdentity={patientIdentity}
+            onProceedToSlip={handleProceedFromTriage}
+            onBack={() => setCurrentStep(3)}
+            onStaffHelp={handleStaffHelp}
+          />
         ) : (
-          <div className="max-w-4xl mx-auto my-12 p-8 bg-white rounded-3xl shadow-lg border border-outline-variant/30 text-center">
-            <span className="material-symbols-outlined text-[60px] text-primary mb-3">lock_clock</span>
-            <h2 className="font-noto text-3xl font-extrabold text-on-surface mb-2">
-              {t('proceed')} — Step {currentStep}
-            </h2>
-            <p className="text-on-surface-variant text-lg mb-6">
-              Step {currentStep} (OPD Service & Triage) is ready for the next phase!
-            </p>
-            <div className="flex justify-center gap-4">
-              <button
-                onClick={() => setCurrentStep(3)}
-                className="h-14 px-6 rounded-2xl bg-surface-container text-on-surface font-bold text-base active:scale-95 transition-all cursor-pointer shadow-sm"
-              >
-                ← {t('backButton')}
-              </button>
-              <button
-                onClick={() => setCurrentStep(1)}
-                className="h-14 px-6 rounded-2xl bg-primary text-white font-bold text-base active:scale-95 transition-all cursor-pointer shadow-md"
-              >
-                {t('selectLanguageHeading')}
-              </button>
-            </div>
-          </div>
+          <TokenSlipScreen
+            selectedLanguage={language}
+            patientIdentity={patientIdentity}
+            triageData={triageData}
+            onResetSession={handleResetSession}
+            onStaffHelp={handleStaffHelp}
+          />
         )}
       </main>
 
