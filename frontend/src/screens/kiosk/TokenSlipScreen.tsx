@@ -9,6 +9,7 @@ interface TokenSlipScreenProps {
   triageData: TriageData;
   onResetSession: () => void;
   onStaffHelp?: () => void;
+  onOpenDoctorPortal?: () => void;
 }
 
 export const TokenSlipScreen: React.FC<TokenSlipScreenProps> = ({
@@ -17,6 +18,7 @@ export const TokenSlipScreen: React.FC<TokenSlipScreenProps> = ({
   triageData,
   onResetSession,
   onStaffHelp,
+  onOpenDoctorPortal,
 }) => {
   const { t } = useTranslation('common');
   const [isPrinted, setIsPrinted] = useState(false);
@@ -189,6 +191,18 @@ export const TokenSlipScreen: React.FC<TokenSlipScreenProps> = ({
             </span>
             <span>{isSmsSent ? 'SMS Sent to Phone' : t('sendSms')}</span>
           </button>
+
+          {/* Channel B: View in Doctor Portal */}
+          {onOpenDoctorPortal && (
+            <button
+              type="button"
+              onClick={onOpenDoctorPortal}
+              className="w-full h-16 rounded-3xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-lg flex items-center justify-center gap-3 shadow-md active:scale-[0.98] transition-all cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[26px]">stethoscope</span>
+              <span>Open in Doctor Portal</span>
+            </button>
+          )}
 
           {/* Staff Help */}
           <button

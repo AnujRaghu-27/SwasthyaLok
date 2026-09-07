@@ -4,9 +4,10 @@ import { useTranslation } from 'react-i18next';
 interface KioskHeaderProps {
   onSosClick?: () => void;
   onStaffHelp?: () => void;
+  onOpenDoctorPortal?: () => void;
 }
 
-export const KioskHeader: React.FC<KioskHeaderProps> = ({ onSosClick, onStaffHelp }) => {
+export const KioskHeader: React.FC<KioskHeaderProps> = ({ onSosClick, onStaffHelp, onOpenDoctorPortal }) => {
   const { t } = useTranslation('common');
 
   return (
@@ -36,6 +37,18 @@ export const KioskHeader: React.FC<KioskHeaderProps> = ({ onSosClick, onStaffHel
 
         {/* Action Controls & Emergency SOS */}
         <div className="flex items-center gap-2 sm:gap-4">
+          {/* Doctor Portal Button */}
+          {onOpenDoctorPortal && (
+            <button
+              onClick={onOpenDoctorPortal}
+              className="flex items-center gap-1.5 bg-primary/10 hover:bg-primary/20 text-primary px-3 sm:px-4 py-2 rounded-xl border border-primary/30 text-xs sm:text-sm font-bold transition-colors cursor-pointer"
+              type="button"
+            >
+              <span className="material-symbols-outlined text-[18px]">stethoscope</span>
+              <span className="hidden sm:inline">Doctor Portal</span>
+            </button>
+          )}
+
           {/* Helpline / Staff Button */}
           <button
             onClick={onStaffHelp}

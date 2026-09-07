@@ -12,6 +12,7 @@ interface PatientHomeScreenProps {
   onProceedToSlip: (triageData: TriageData) => void;
   onBack: () => void;
   onStaffHelp?: () => void;
+  onOpenDoctorPortal?: () => void;
 }
 
 export const PatientHomeScreen: React.FC<PatientHomeScreenProps> = ({
@@ -21,6 +22,7 @@ export const PatientHomeScreen: React.FC<PatientHomeScreenProps> = ({
   onProceedToSlip,
   onBack,
   onStaffHelp,
+  onOpenDoctorPortal,
 }) => {
   const { t } = useTranslation('common');
   const [activePath, setActivePath] = useState<'upload' | 'consult' | 'extract'>('consult');
@@ -116,7 +118,13 @@ export const PatientHomeScreen: React.FC<PatientHomeScreenProps> = ({
         {/* Doctor Portal View Trigger */}
         <button
           type="button"
-          onClick={() => setIsDoctorModalOpen(true)}
+          onClick={() => {
+            if (onOpenDoctorPortal) {
+              onOpenDoctorPortal();
+            } else {
+              setIsDoctorModalOpen(true);
+            }
+          }}
           className="px-4 py-2.5 bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary font-bold text-xs sm:text-sm rounded-2xl flex items-center gap-2 transition-all cursor-pointer self-start sm:self-auto"
         >
           <span className="material-symbols-outlined text-[20px]">stethoscope</span>

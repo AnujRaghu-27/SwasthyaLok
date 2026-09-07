@@ -8,10 +8,12 @@ import { ModeSelectionScreen } from './screens/kiosk/ModeSelectionScreen';
 import { PatientHomeScreen } from './screens/kiosk/PatientHomeScreen';
 import { OPD_DEPARTMENTS } from './screens/kiosk/ServiceTriageScreen';
 import { TokenSlipScreen } from './screens/kiosk/TokenSlipScreen';
+import { DoctorPortalScreen } from './screens/doctor/DoctorPortalScreen';
 import { voiceService } from './services/voice';
 import i18n, { langToLocale } from './i18n.config';
 
 export function App() {
+  const [activeWorkspace, setActiveWorkspace] = useState<'kiosk' | 'doctor'>('kiosk');
   const [currentStep, setCurrentStep] = useState<KioskStep>(1);
   const [language, setLanguage] = useState<Language>('hindi');
   const [mode, setMode] = useState<InteractionMode>('voice');
@@ -70,10 +72,23 @@ export function App() {
     alert(t('staffHelp'));
   };
 
+  if (activeWorkspace === 'doctor') {
+    return (
+      <DoctorPortalScreen
+        onBackToKiosk={() => setActiveWorkspace('kiosk')}
+        selectedLanguage={language}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#FAF8FF] flex flex-col justify-between font-sans text-on-surface">
       {/* KIOSK HEADER */}
-      <KioskHeader onSosClick={handleSos} onStaffHelp={handleStaffHelp} />
+      <KioskHeader
+        onSosClick={handleSos}
+        onStaffHelp={handleStaffHelp}
+        onOpenDoctorPortal={() => setActiveWorkspace('doctor')}
+      />
 
       {/* 5-STEP WORKFLOW NAVIGATOR */}
       <StepProgress currentStep={currentStep} onStepClick={(step) => setCurrentStep(step)} />
@@ -108,6 +123,7 @@ export function App() {
             onProceedToSlip={handleProceedFromTriage}
             onBack={() => setCurrentStep(3)}
             onStaffHelp={handleStaffHelp}
+            onOpenDoctorPortal={() => setActiveWorkspace('doctor')}
           />
         ) : (
           <TokenSlipScreen
@@ -116,6 +132,7 @@ export function App() {
             triageData={triageData}
             onResetSession={handleResetSession}
             onStaffHelp={handleStaffHelp}
+            onOpenDoctorPortal={() => setActiveWorkspace('doctor')}
           />
         )}
       </main>
