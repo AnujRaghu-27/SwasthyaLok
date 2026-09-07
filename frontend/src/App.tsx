@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { Language, InteractionMode, KioskStep } from './types';
+import type { Language, InteractionMode, KioskStep, PatientIdentity } from './types';
 import { KioskHeader } from './components/kiosk/KioskHeader';
 import { StepProgress } from './components/kiosk/StepProgress';
-import { LanguageAndModeScreen } from './screens/kiosk/LanguageAndModeScreen';
+import { LanguageAndIdentityScreen } from './screens/kiosk/LanguageAndIdentityScreen';
+import { ModeSelectionScreen } from './screens/kiosk/ModeSelectionScreen';
 import { voiceService } from './services/voice';
 import i18n, { langToLocale } from './i18n.config';
 
@@ -11,6 +12,12 @@ export function App() {
   const [currentStep, setCurrentStep] = useState<KioskStep>(1);
   const [language, setLanguage] = useState<Language>('hindi');
   const [mode, setMode] = useState<InteractionMode>('voice');
+  const [patientIdentity, setPatientIdentity] = useState<PatientIdentity>({
+    type: 'abha',
+    idNumber: '',
+    isVerified: false,
+    consentGiven: true,
+  });
   const { t } = useTranslation('common');
 
   const handleLanguageChange = (lang: Language) => {
@@ -19,9 +26,13 @@ export function App() {
     i18n.changeLanguage(langToLocale[lang]);
   };
 
-  const handleProceedFromLanguageAndMode = () => {
+  const handleProceedFromLanguageAndIdentity = () => {
     voiceService.speak(t('proceedPrompt'), language);
     setCurrentStep(3);
+  };
+
+  const handleProceedFromMode = () => {
+    setCurrentStep(4);
   };
 
   const handleSos = () => {
@@ -43,12 +54,22 @@ export function App() {
       {/* MAIN SCREEN AREA */}
       <main className="flex-1 flex flex-col justify-start">
         {currentStep === 1 || currentStep === 2 ? (
-          <LanguageAndModeScreen
+          <LanguageAndIdentityScreen
             selectedLanguage={language}
             onLanguageChange={handleLanguageChange}
+            patientIdentity={patientIdentity}
+            onIdentityChange={setPatientIdentity}
+            onProceed={handleProceedFromLanguageAndIdentity}
+            onStaffHelp={handleStaffHelp}
+          />
+        ) : currentStep === 3 ? (
+          <ModeSelectionScreen
+            selectedLanguage={language}
             selectedMode={mode}
             onModeChange={setMode}
-            onProceed={handleProceedFromLanguageAndMode}
+            patientIdentity={patientIdentity}
+            onProceed={handleProceedFromMode}
+            onBack={() => setCurrentStep(1)}
             onStaffHelp={handleStaffHelp}
           />
         ) : (
@@ -58,14 +79,22 @@ export function App() {
               {t('proceed')} — Step {currentStep}
             </h2>
             <p className="text-on-surface-variant text-lg mb-6">
-              Step {currentStep} will be built in the next review phase!
+              Step {currentStep} (OPD Service & Triage) is ready for the next phase!
             </p>
-            <button
-              onClick={() => setCurrentStep(1)}
-              className="h-14 px-8 rounded-2xl bg-primary text-white font-bold text-base active:scale-95 transition-all cursor-pointer shadow-md"
-            >
-              ← {t('selectLanguageHeading')}
-            </button>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => setCurrentStep(3)}
+                className="h-14 px-6 rounded-2xl bg-surface-container text-on-surface font-bold text-base active:scale-95 transition-all cursor-pointer shadow-sm"
+              >
+                ← {t('backButton')}
+              </button>
+              <button
+                onClick={() => setCurrentStep(1)}
+                className="h-14 px-6 rounded-2xl bg-primary text-white font-bold text-base active:scale-95 transition-all cursor-pointer shadow-md"
+              >
+                {t('selectLanguageHeading')}
+              </button>
+            </div>
           </div>
         )}
       </main>
