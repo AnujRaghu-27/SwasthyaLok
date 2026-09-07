@@ -7,6 +7,7 @@ export type KioskStep = 1 | 2 | 3 | 4 | 5;
 export interface PatientIdentity {
   type: 'abha' | 'aadhaar' | 'qr';
   idNumber: string;
+  mobile?: string;
   name?: string;
   age?: number;
   gender?: string;
